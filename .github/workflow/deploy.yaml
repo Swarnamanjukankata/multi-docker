@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: docker login -u ${{ secrets.docker-swarna }} -p ${{ secrets.SWARNA }}
+      - run: docker login -u ${{ secrets.DOCKER-SWARNA }} -p ${{ secrets.SWARNA }}
       - run: docker build -t rallycoding/react-test -f ./client/Dockerfile.dev ./client
       - run: docker run -e CI=true rallycoding/react-test npm test
 
