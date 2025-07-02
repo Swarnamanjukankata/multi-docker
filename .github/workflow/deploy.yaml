@@ -1,24 +1,37 @@
 name: Deploy MultiDocker
+
 on:
   push:
     branches:
-      - main # check your repo, your default branch might be master!
+      - main  # or use 'master' if that's your branch
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
-      - run: docker login -u ${{ secrets.SWARNAMANJUK}} -p ${{ secrets.SWARNA }}
-      - run: docker build -t swarnamanjuk/react-test -f ./client/Dockerfile.dev ./client
-      - run: docker run -e CI=true swarnamanjuk/react-test npm test
 
-      - run: docker build -t swarnamanjuk/multi-client ./client
-      - run: docker build -t swarnamanjuk/multi-nginx ./nginx
-      - run: docker build -t swarnamanjuk/multi-server ./server
-      - run: docker build -t swarnamanjuk/multi-worker ./worker
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - run: docker push swarnamanjuk/multi-client
-      - run: docker push swarnamanjuk/multi-nginx
-      - run: docker push swarnamanjuk/multi-server
-      - run: docker push swarnamanjuk/multi-worker
+      - name: Run tests
+        run: docker build -t swarnamanjuk/react-test -f ./client/Dockerfile.dev ./client && \
+             docker run -e CI=true swarnamanjuk/react-test npm test
+
+      - name: Build images
+        run: |
+          docker build -t swarnamanjuk/multi-client ./client
+          docker build -t swarnamanjuk/multi-nginx ./nginx
+          docker build -t swarnamanjuk/multi-server ./server
+          docker build -t swarnamanjuk/multi-worker ./worker
+
+      - name: Push images
+        run: |
+          docker push swarnamanjuk/multi-client
+          docker push swarnamanjuk/multi-nginx
+          docker push swarnamanjuk/multi-server
+          docker push swarnamanjuk/multi-worker
