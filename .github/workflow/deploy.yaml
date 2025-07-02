@@ -10,15 +10,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: docker login -u ${{ secrets.SWARNAMANJUK}} -p ${{ secrets.SWARNA }}
-      - run: docker build -t rallycoding/react-test -f ./client/Dockerfile.dev ./client
-      - run: docker run -e CI=true rallycoding/react-test npm test
+      - run: docker build -t swarnamanjuk/react-test -f ./client/Dockerfile.dev ./client
+      - run: docker run -e CI=true swarnamanjuk/react-test npm test
 
-      - run: docker build -t rallycoding/multi-client ./client
-      - run: docker build -t rallycoding/multi-nginx ./nginx
-      - run: docker build -t rallycoding/multi-server ./server
-      - run: docker build -t rallycoding/multi-worker ./worker
+      - run: docker build -t swarnamanjuk/multi-client ./client
+      - run: docker build -t swarnamanjuk/multi-nginx ./nginx
+      - run: docker build -t swarnamanjuk/multi-server ./server
+      - run: docker build -t swarnamanjuk/multi-worker ./worker
 
-      - run: docker push rallycoding/multi-client
-      - run: docker push rallycoding/multi-nginx
-      - run: docker push rallycoding/multi-server
-      - run: docker push rallycoding/multi-worker
+      - run: docker push swarnamanjuk/multi-client
+      - run: docker push swarnamanjuk/multi-nginx
+      - run: docker push swarnamanjuk/multi-server
+      - run: docker push swarnamanjuk/multi-worker
