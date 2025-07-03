@@ -3,7 +3,7 @@ name: Deploy MultiDocker
 on:
   push:
     branches:
-      - main  # or use 'master' if that's your branch
+      - master  # or use 'master' if that's your branch
 
 jobs:
   build:
